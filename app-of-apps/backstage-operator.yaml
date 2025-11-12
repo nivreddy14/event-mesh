@@ -11,15 +11,42 @@ spec:
     chart: backstage
     helm:
       parameters:
+        # Enable PostgreSQL
         - name: postgresql.enabled
           value: 'true'
-        - name: env.APP_CONFIG_app_baseUrl
-          value: 'http://192.168.194.250:7007'
-        - name: env.APP_CONFIG_backend_baseUrl
-          value: 'http://192.168.194.250:7007'
+
+        # Enable ingress
+        - name: ingress.enabled
+          value: 'true'
+
+        # Set the ingress hostname
+        - name: ingress.hosts[0].host
+          value: backstage-operator.backstage.svc.cluster.local
+        - name: ingress.hosts[0].paths[0]
+          value: /
+
+        # # Configure TLS (optional, create the secret beforehand)
+        # - name: ingress.tls[0].hosts[0]
+        #   value: backstage-operator.backstage.svc.cluster.local
+        # - name: ingress.tls[0].secretName
+        #   value: backstage-tls
+
+        # Runtime environment variables for frontend config
+        - name: extraEnvVars[0].name
+          value: APP_CONFIG_app_baseUrl
+        - name: extraEnvVars[0].value
+          value: http://backstage-operator.backstage.svc.cluster.local
+        - name: extraEnvVars[1].name
+          value: APP_CONFIG_backend_baseUrl
+        - name: extraEnvVars[1].value
+          value: http://backstage-operator.backstage.svc.cluster.local
+
   destination:
     server: https://kubernetes.default.svc
     namespace: backstage
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

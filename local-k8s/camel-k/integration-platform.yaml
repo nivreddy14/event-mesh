@@ -8,5 +8,7 @@ metadata:
 spec:
   build:
     registry:
-      address: 192.168.194.214
+      address: ghcr.io
+      organization: craigedmunds
       insecure: true
+      secret: ghcr-classic

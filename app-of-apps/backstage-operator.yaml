@@ -19,11 +19,24 @@ spec:
         - name: ingress.enabled
           value: 'true'
 
+        - name: ingress.className
+          value: 'nginx'
+          
         # Set the ingress hostname
-        - name: ingress.hosts[0].host
-          value: backstage-operator.backstage.svc.cluster.local
-        - name: ingress.hosts[0].paths[0]
-          value: /
+        - name: ingress.host
+          value: backstage-operator.mac.local.ctoaas.co
+        
+        - name: ingress.tls.enabled
+          value: 'false'
+
+        # - name: ingress.tls.secretName
+        #   value: true
+        
+        # # Set the ingress hostname
+        # - name: ingress.hosts[0].host
+        #   value: backstage-operator.backstage.svc.cluster.local
+        # - name: ingress.hosts[0].paths[0]
+        #   value: /
 
         # # Configure TLS (optional, create the secret beforehand)
         # - name: ingress.tls[0].hosts[0]
@@ -32,14 +45,14 @@ spec:
         #   value: backstage-tls
 
         # Runtime environment variables for frontend config
-        - name: extraEnvVars[0].name
-          value: APP_CONFIG_app_baseUrl
-        - name: extraEnvVars[0].value
-          value: http://backstage-operator.backstage.svc.cluster.local
-        - name: extraEnvVars[1].name
-          value: APP_CONFIG_backend_baseUrl
-        - name: extraEnvVars[1].value
-          value: http://backstage-operator.backstage.svc.cluster.local
+        # - name: extraEnvVars[0].name
+        #   value: APP_CONFIG_app_baseUrl
+        # - name: extraEnvVars[0].value
+        #   value: http://backstage-operator.backstage.svc.cluster.local
+        # - name: extraEnvVars[1].name
+        #   value: APP_CONFIG_backend_baseUrl
+        # - name: extraEnvVars[1].value
+        #   value: http://backstage-operator.backstage.svc.cluster.local
 
   destination:
     server: https://kubernetes.default.svc

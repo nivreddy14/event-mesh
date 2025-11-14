@@ -10,3 +10,7 @@ metadata:
   name: designer
 spec:
   ingress: {}
+  camelK:
+    enabled: true
+    namespace: camel-k
+    serviceAccount: kaoto-standalone

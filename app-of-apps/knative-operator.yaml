@@ -1,18 +1,18 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: knative-operator
-  namespace: argocd
-spec:
-  project: eventing
-  source:
-    repoURL: https://knative.github.io/operator
-    targetRevision: v1.19.3
-    chart: knative-operator
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: knative
-  syncPolicy:
-    automated: {}
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: knative-operator
+#   namespace: argocd
+# spec:
+#   project: eventing
+#   source:
+#     repoURL: https://knative.github.io/operator
+#     targetRevision: v1.19.3
+#     chart: knative-operator
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: knative
+#   syncPolicy:
+#     automated: {}
+#     syncOptions:
+#       - CreateNamespace=true

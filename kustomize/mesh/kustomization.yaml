@@ -1,13 +1,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# This doesn't work in argocd recent versions due to --enable-helm being missing
-# https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+helmChartInflationGenerator:
+  - chartRepoUrl: https://apache.github.io/camel-k/charts/
+    chartName: camel-k
+    chartVersion: 2.8.0
 
-# helmChartInflationGenerator:
-#   - chartRepoUrl: https://apache.github.io/camel-k/charts/
-#     chartName: camel-k
-#     chartVersion: 2.8.0
+# resources:
+# - base
+
+resources:
+- lob-applications.yaml
 
 patches: 
   - patch: |-
@@ -23,5 +26,5 @@ patches:
               env:
                 - name: WATCH_NAMESPACE
                   # todo : drive this from configuration
-                  value: camel-k-mesh,camel-k-mesh-demo
+                  value: camel-k-mesh-demo
                   valueFrom: null

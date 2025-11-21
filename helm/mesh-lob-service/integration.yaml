@@ -1,0 +1,15 @@
+# Camel K Integration YAML
+- route:
+    from:
+      uri: "kafka:users?brokers=kafka.confluent.svc.cluster.local:9092"
+      steps:
+      - log: ${body}
+      - to: 
+          uri: "kamelet:spring-rabbitmq-sink"
+          parameters:
+            host: "camel-k-mesh.camel-k-mesh.svc.cluster.local"
+            port: 5672
+            exchangeName: "ex.demo.userservice.usercreated"
+            username: "{{secret:camel-k-mesh-rabbit-user/username}}"
+            password: "{{secret:camel-k-mesh-rabbit-user/password}}"
+            

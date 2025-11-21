@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: camel-k-mesh-{{.Values.lob}}-{{.Values.name}}
+  name: camel-k-mesh-{{.Values.lob}}-{{.Values.name}}-jbang-config
+  namespace: camel-k-mesh-{{.Values.lob}}
+data:
+  integration.yaml: |
+{{ .Files.Get "integration.yaml" | indent 4 }}

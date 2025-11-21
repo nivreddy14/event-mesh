@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    apim/service.type: mesh-lob
+    apim/deps.rabbitmq: 'true'
+  name: camel-k-mesh-{{.Values.lob}}

@@ -8,7 +8,9 @@ spec:
   source:
     repoURL: https://github.com/craigedmunds/argocd-eda.git
     path: kustomize/mesh
-  
+    kustomize:
+      enableHelm: true
+      buildOptions: "--enable-helm"
   # source:
   #   chart: camel-k
   #   repoURL: https://apache.github.io/camel-k/charts

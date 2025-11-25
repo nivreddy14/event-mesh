@@ -10,7 +10,7 @@ defaultContentType: application/cloudevents+json
 
 servers:
   production:
-    host: kafka1.example.gov.uk:9092
+    host: kafka.confluent.svc.cluster.local:9092
     protocol: kafka
     description: Production Kafka cluster
 
@@ -26,6 +26,9 @@ channels:
   userCreated:
     description: Topic containing user created events.
     address: user/signedup
+    bindings:
+      kafka:
+        topic: users
     messages:
       UserCreated:
         $ref: '#/components/messages/UserCreated'

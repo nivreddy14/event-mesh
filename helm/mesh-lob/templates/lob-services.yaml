@@ -11,28 +11,33 @@ spec:
       repoURL: https://github.com/craigedmunds/argocd-eda.git
       revision: HEAD
       directories:
+      - path: 'mesh/lobs/{{.Values.name}}/*'
+      values:
+        service: '{{`{{ .path.basename }}`}}'
 
-      # todo : drive this from configuration rather than just the folders in the local folder
-      # (similar to what we do in lob-deployment for APIs)
-      - path: mesh/lobs/{{.Values.name}}/*
   template:
     metadata:
-      name: 'camel-k-mesh-{{.Values.name}}-{{ "{{.path.basename}}" }}'
+      name: "camel-k-mesh-{{ .Values.name }}-{{`{{ .values.service }}`}}"
     spec:
       project: "eventing"
-      source:
-        repoURL: https://github.com/craigedmunds/argocd-eda.git
-        targetRevision: HEAD
-        path: 'helm/mesh-lob-service'
-        helm:
-          parameters:
-            - name: lob
-              value: '{{ .Values.name }}'
-            - name: name
-              value: '{{ "{{.path.basename}}" }}'
+      sources:
+        - repoURL: https://github.com/craigedmunds/argocd-eda.git
+          ref: lob
+        - repoURL: https://github.com/craigedmunds/argocd-eda.git
+          targetRevision: HEAD
+          path: 'helm/mesh-lob-service'
+          helm:
+            valueFiles:
+            - $lob/mesh/lobs/{{.Values.name}}/{{`{{ .values.service }}`}}/asyncapi.yaml
+              
+            parameters:
+              - name: lob
+                value: "{{.Values.name}}"
+              - name: name
+                value: '{{`{{ .values.service }}`}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'camel-k-mesh-{{.Values.name}}'
+        namespace: "camel-k-mesh-{{.Values.name}}"
 
       syncPolicy:
         syncOptions:

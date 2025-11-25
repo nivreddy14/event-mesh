@@ -7,4 +7,4 @@ metadata:
   namespace: camel-k-mesh-{{.Values.lob}}
 data:
   integration.yaml: |
-{{ .Files.Get "integration.yaml" | indent 4 }}
+{{ tpl (.Files.Get "integration.yaml") . | indent 4 }}

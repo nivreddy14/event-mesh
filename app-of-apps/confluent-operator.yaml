@@ -11,7 +11,7 @@ spec:
     chart: confluent-for-kubernetes
   destination:
     server: https://kubernetes.default.svc
-    namespace: confluent
+    namespace: confluent-operator
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

@@ -49,3 +49,8 @@ Create seed application:
 
 `kubectl apply -f seed/argocd-eda-bootstrap.yaml`
 
+Get the rabbitmq admin user & password:
+
+`kubectl get secret camel-k-mesh-default-user -n camel-k-mesh -o json | jq '.data.username' -r | base64 -D`
+
+`kubectl get secret camel-k-mesh-default-user -n camel-k-mesh -o json | jq '.data.password' -r | base64 -D`

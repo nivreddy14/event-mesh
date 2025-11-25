@@ -4,6 +4,6 @@ metadata:
   name: users
   namespace: confluent
 spec:
-  replicas: 1
+  replicas: 0
   configs:
     cleanup.policy: "compact"

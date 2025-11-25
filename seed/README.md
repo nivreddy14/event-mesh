@@ -17,10 +17,17 @@ Or via argocd:
 
 `argocd admin initial-password -n argocd`
 
-Create projects ?
+Add github credentials for backstage authentication:
 
-Create repositories ?
+`kubectl create namespace backstage`
+
+```
+kubectl -n backstage create secret generic backstage-github-auth \
+  --from-literal=GITHUB_CLIENT_ID="$GITHUB_BACKSTAGE_CLIENTID" \
+  --from-literal=GITHUB_CLIENT_SECRET="$GITHUB_BACKSTAGE_CLIENTSECRET
+```
 
 Create seed application:
 
 `kubectl apply -f seed/argocd-eda-bootstrap.yaml`
+

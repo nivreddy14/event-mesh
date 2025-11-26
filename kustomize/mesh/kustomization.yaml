@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - producers.yaml
+- consumers.yaml
 - lob-applications.yaml
 - kyverno-copy-rabbit-secret.yaml
 - kyverno-rbac.yaml

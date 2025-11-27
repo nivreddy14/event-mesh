@@ -3,6 +3,9 @@ kind: ApplicationSet
 metadata:
   name: camel-k-mesh-consumers
   namespace: argocd
+  labels:
+    repo: argocd-eda
+    branch-strategy: multisource
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -26,6 +29,7 @@ spec:
       sources:
         
         - repoURL: https://github.com/craigedmunds/argocd-eda.git
+          targetRevision: HEAD
           ref: lob
 
         - repoURL: https://github.com/craigedmunds/argocd-eda.git

@@ -1,11 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../base
-  - argocd-projects.yaml
-
-components:
-  - ../../../../kustomize/_common/components/argocd-branch-targetrevision
+  - ../../base/supporting-apps
+  - ../../base/mesh
 
 configMapGenerator:
   - name: argocd-branch-targetrevision
@@ -13,13 +10,16 @@ configMapGenerator:
     literals:
       - targetRevision=feature/branch-based
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+components:
+  - ../../../_common/components/argocd-branch-targetrevision
+  
 patches:
  - target:
       group: argoproj.io
       version: v1alpha1
       kind: Application
-      name: eda-bootstrap
+      name: camel-k-mesh
    path: patch-argocd-eda-bootstrap.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true

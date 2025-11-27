@@ -5,19 +5,17 @@ metadata:
 spec:
 
   source:
+    
     # Set the eda project to use a feature branch
     targetRevision: feature/branch-based
-    path: kustomize/seed/overlays/rancher-desktop
+    path: kustomize/seed/overlays/feature-branch-based
 
-    # Patch all of the applications from the argocd-eda to use the feature branch too
-    # (relies on the application having the appropriate label)
     # kustomize:
     #   patches:
     #   - target:
     #       kind: Application
-    #       # name: backstage
-    #       labelSelector: repo=argocd-eda
+    #       name: camel-k-mesh
     #     patch: |-
     #       - op: replace
-    #         path: /spec/source/targetRevision
-    #         value: feature/branch-based
+    #         path: /spec/source/path
+    #         value: kustomize/mesh/overlays/feature-branch-based

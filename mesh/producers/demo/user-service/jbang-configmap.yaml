@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: camel-k-mesh-producer-demo-user-service
+    backstage.io/kubernetes-id: camel-k-mesh-producer-demo-user-service
+  name: camel-k-mesh-producer-demo-user-service-jbang-config
+  namespace: camel-k-mesh-producer-demo-user-service
+data:
+  integration.yaml: |
+    - route:
+        from:
+          uri: "timer:tick?period=30s"
+          steps:
+          - setHeader:
+              headers:
+                - name: key
+                  constant: 1
+                - name: partition_key
+                  constant: 1
+          - setBody:
+              simple: >
+                {"event":"userCreated","id":"123","email":"user@example.com"}
+          - marshal:
+              json: {}
+          - log: ${body}
+          - to:
+              uri: "kafka:users?brokers=kafka.confluent.svc.cluster.local:9092"
+                

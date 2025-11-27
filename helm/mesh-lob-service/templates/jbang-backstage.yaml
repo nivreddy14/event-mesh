@@ -8,64 +8,81 @@ data:
 {{- $lob := .Values.lob }}
 {{- $service := .Values.name }}
 
+{{- $domain := .Values.domain }}
+{{- $subdomain := .Values.subdomain }}
+{{- $owner := .Values.owner }}
+
 {{- $asyncapispec := fromYaml .Values.asyncapispec }}
-{{- range $k, $v := $asyncapispec.channels }}
 
-{{- $event := lower $k }}
 
-  catalog-component-camel-k-mesh-{{ $lob }}-{{ $service }}-{{ $event }}.yaml: |
+  catalog-component-camel-k-mesh-{{ $domain }}-{{ $subdomain }}.yaml: |
     apiVersion: backstage.io/v1alpha1
-    kind: Component
+    kind: System
     metadata:
-      name: {{ $lob }}-{{ $service }}-{{ $event }}
-      annotations:
-        backstage.io/kubernetes-id: camel-k-mesh-{{ $lob }}-{{ $service }}-{{ $event }}
+      name: {{ $lob }}-{{ $service }}
+      description: The {{ $lob }} {{ $service }} service
     spec:
-      type: service
-      lifecycle: production
-      owner: apim
-      system: {{ $lob }}-lob
-      subcomponentOf: {{ $lob }}-{{ $service }}
+      owner: {{ $owner }}
+      domain: {{ $subdomain }}
     ---
     apiVersion: backstage.io/v1alpha1
     kind: Component
     metadata:
-      name: {{ $lob }}-{{ $service }}-{{ $event }}-topic
+      name: {{ $domain }}-{{ $subdomain }}
       annotations:
-        backstage.io/kubernetes-id: camel-k-mesh-{{ $lob }}-{{ $service }}-{{ $event }}-topic
-    spec:
-      type: topic
-      lifecycle: production
-      owner: apim
-      system: {{ $lob }}-lob
-      subcomponentOf: {{ $lob }}-{{ $service }}-{{ $event }}
-    ---
-{{- end }}
-
-  catalog-component-camel-k-mesh-{{.Values.lob}}-{{.Values.name}}.yaml: |
-    apiVersion: backstage.io/v1alpha1
-    kind: Component
-    metadata:
-      name: {{.Values.lob}}-{{.Values.name}}
-      annotations:
-        backstage.io/kubernetes-id: camel-k-mesh-{{.Values.lob}}-{{.Values.name}}
+        backstage.io/kubernetes-id: camel-k-mesh-{{ $domain }}-{{ $subdomain }}
     spec:
       type: service
       lifecycle: production
-      owner: apim
-      system: {{.Values.lob}}-lob
+      owner: {{ $owner }}
+      domain: {{ $subdomain }}
+      system: {{ $lob }}-{{ $service }}
       providesApis:
-        - {{.Values.lob}}-{{.Values.name}}
+        - {{ $domain }}-{{ $subdomain }}
     ---
     apiVersion: backstage.io/v1alpha1
     kind: API
     metadata:
-      name: {{.Values.lob}}-{{.Values.name}}
+      name: {{ $domain }}-{{ $subdomain }}
       description: Does stuff
     spec:
       type: asyncapi
       lifecycle: production
-      owner: apim
-      system: {{.Values.lob}}-lob
+      owner: {{ $owner }}
+      domain: {{ $subdomain }}
+      system: {{ $lob }}-{{ $service }}
       definition: |
 {{ .Values.asyncapispec | indent 8 }}
+
+{{- range $k, $v := $asyncapispec.channels }}
+{{- $event := lower $k }}
+
+  catalog-component-camel-k-mesh-{{ $domain }}-{{ $subdomain }}-{{ $event }}.yaml: |
+    apiVersion: backstage.io/v1alpha1
+    kind: Component
+    metadata:
+      name: {{ $domain }}-{{ $subdomain }}-{{ $event }}
+      annotations:
+        backstage.io/kubernetes-id: camel-k-mesh-{{ $domain }}-{{ $subdomain }}-{{ $event }}
+    spec:
+      type: event
+      lifecycle: production
+      owner: {{ $owner }}
+      system: {{ $lob }}-{{ $service }}
+      subcomponentOf: {{ $domain }}-{{ $subdomain }}
+    ---
+    apiVersion: backstage.io/v1alpha1
+    kind: Component
+    metadata:
+      name: {{ $domain }}-{{ $subdomain }}-{{ $event }}-topic
+      annotations:
+        backstage.io/kubernetes-id: camel-k-mesh-{{ $domain }}-{{ $subdomain }}-{{ $event }}-topic
+    spec:
+      type: topic
+      lifecycle: production
+      owner: apim
+      system: camel-k-mesh
+      subcomponentOf: {{ $domain }}-{{ $subdomain }}-{{ $event }}
+    ---
+{{- end }}
+

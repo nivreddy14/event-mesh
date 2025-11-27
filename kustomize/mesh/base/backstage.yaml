@@ -1,10 +1,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: catalog-component-camel-k-mesh-sample
+  name: catalog-component-camel-k-mesh
   namespace: backstage
 data:
+
   catalog-component-camel-k-mesh.yaml: |
+    apiVersion: backstage.io/v1alpha1
+    kind: Domain
+    metadata:
+      name: ecommerce
+      description: The ecommerce domain
+    spec:
+      owner: crm
+    ---
+    apiVersion: backstage.io/v1alpha1
+    kind: Domain
+    metadata:
+      name: identity
+      description: The ecommerce identity subdomain
+    spec:
+      owner: crm
+      subdomainOf: ecommerce
+    ---
     apiVersion: backstage.io/v1alpha1
     kind: System
     metadata:

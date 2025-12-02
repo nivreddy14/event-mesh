@@ -7,4 +7,4 @@ spec:
   source:
     repoURL: https://github.com/craigedmunds/argocd-eda.git
     path: kustomize/mesh
-    targetRevision: main
+    targetRevision: niv-test

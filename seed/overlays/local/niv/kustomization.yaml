@@ -11,6 +11,12 @@ patches:
       kind: Application
       name: eda-bootstrap
    path: patch-argocd-eda-bootstrap.yaml
+ - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: Application
+      name: camel-k-mesh
+   path: patch-camel-k-mesh-app.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

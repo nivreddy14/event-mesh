@@ -17,6 +17,12 @@ patches:
       kind: Application
       name: camel-k-mesh
    path: patch-camel-k-mesh.yaml
+ - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: Application
+      name: confluent-operator
+   path: patch-confluent-operator.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

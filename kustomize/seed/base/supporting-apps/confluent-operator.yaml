@@ -9,10 +9,11 @@ spec:
     repoURL: https://packages.confluent.io/helm
     targetRevision: 0.1263.34
     chart: confluent-for-kubernetes
-    helm:
-      parameters:
+    parameters:
         - name: namespaced
-          value: "false"
+          value: "false"      
+        - name: watchAllNamespaces
+          value: "true"       # Make the operator watch resources in all namespaces
   destination:
     server: https://kubernetes.default.svc
     namespace: confluent-operator

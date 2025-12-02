@@ -6,7 +6,7 @@ metadata:
 spec:
   project: eventing
   source:
-    repoURL: https://github.com/YOUR/repo.git
+    repoURL: https://github.com/craigedmunds/argocd-eda.git
     path: kustomize/camel-k-mesh
     targetRevision: niv-test
   destination:

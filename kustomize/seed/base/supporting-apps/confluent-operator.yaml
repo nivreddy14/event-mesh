@@ -9,6 +9,10 @@ spec:
     repoURL: https://packages.confluent.io/helm
     targetRevision: 0.1263.34
     chart: confluent-for-kubernetes
+    helm:
+      parameters:
+        - name: namespaced
+          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: confluent-operator

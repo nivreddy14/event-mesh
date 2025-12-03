@@ -1,0 +1,5 @@
+serviceType: eventing
+
+domain: ecommerce
+subdomain: identity
+owner: crm

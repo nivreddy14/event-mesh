@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - camel-karavan.yaml
+  - cert-manager.yaml
+  - confluent-operator.yaml
+  - confluent.yaml
+  # - grafana.yaml
+  - kyverno.yaml
+  - kyverno-rbac.yaml
+  - prometheus.yaml
+  - rabbitmq.yaml

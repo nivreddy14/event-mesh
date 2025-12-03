@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: camel-k-mesh
+  namespace: argocd
+spec:
+  project: eventing
+  source:
+    repoURL: https://github.com/nivreddy14/event-mesh.git
+    targetRevision: main
+    path: kustomize/mesh
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: camel-k-mesh

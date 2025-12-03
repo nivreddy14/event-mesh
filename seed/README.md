@@ -1,13 +1,10 @@
-# Argocd Event Driven Architecture
-
-# Using the seed
+# Seed Job
 
 In order to instantiate this in a new argocd cluster...
 
 Install ArgoCD (from https://argo-cd.readthedocs.io/en/latest/getting_started/):
 
 `kubectl create namespace argocd`
-
 `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`
 
 Get the admin password via k8s:
@@ -48,26 +45,12 @@ kubectl create secret docker-registry -n backstage ghcr-creds \
   --docker-email="$GITHUB_BUILD_USERNAME"
 ```
 
-Create the seed application:
+Create seed application:
 
-`kustomize build seed | kubectl apply -f -`
+`kubectl apply -f seed/argocd-eda-bootstrap.yaml`
 
 Get the rabbitmq admin user & password:
 
 `kubectl get secret camel-k-mesh-default-user -n camel-k-mesh -o json | jq '.data.username' -r | base64 -D`
 
 `kubectl get secret camel-k-mesh-default-user -n camel-k-mesh -o json | jq '.data.password' -r | base64 -D`
-
-## Working on a feature branch
-
-In order to work on a feature branch of this repo, to avoid impacting others whilst work is in progress:
-
-Create an overlay for the kustomize seed application (e.g. kustomize/seed/overlays/feature-branch-name)
-
-Create an overlay for the kustomize mesh application (e.g. kustomize/mesh/overlays/feature-branch-name)
-
-Create an overlay for the root seed application (e.g. seed/overlays/local/craig)
-
-Re-Apply the seed with the overlay:
-
-`kustomize build seed/overlays/local/craig | kubectl apply -f -`

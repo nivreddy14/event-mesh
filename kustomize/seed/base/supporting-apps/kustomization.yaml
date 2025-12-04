@@ -4,9 +4,10 @@ kind: Kustomization
 resources:
   - camel-karavan.yaml
   - cert-manager.yaml
-  - confluent-operator.yaml
-  - confluent.yaml
-  # - grafana.yaml
+  # - confluent-operator.yaml  # COMMENT OUT
+  # - confluent.yaml           # COMMENT OUT
+  - strimzi-operator.yaml      # ADD THIS
+  - kafka-cluster.yaml         # ADD THIS
   - kyverno.yaml
   - kyverno-rbac.yaml
   - prometheus.yaml

@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: confluent
+  name: strimzi-operator
   namespace: argocd
-  labels:
-    repo: argocd-eda
 spec:
   project: eventing
   source:
-    repoURL: https://github.com/nivreddy14/event-mesh.git
-    path: kustomize/confluent
-    targetRevision: HEAD
-    
+    repoURL: https://strimzi.io/charts/
+    targetRevision: 0.44.0
+    chart: strimzi-kafka-operator
   destination:
     server: https://kubernetes.default.svc
-    namespace: confluent
+    namespace: strimzi-system
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

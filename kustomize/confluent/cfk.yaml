@@ -4,10 +4,12 @@ metadata:
   name: kraftcontroller
   namespace: confluent
 spec:
-  dataVolumeCapacity: 10G
+  dataVolumeCapacity: 10Gi
+  storageClass:
+    name: standard
   image:
-    application: confluentinc/cp-server:7.9.0
-    init: confluentinc/confluent-init-container:2.11.0
+    application: confluentinc/cp-server:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   replicas: 3
 ---
 apiVersion: platform.confluent.io/v1beta1
@@ -21,6 +23,7 @@ spec:
     application: confluentinc/cp-server:8.0.0
     init: confluentinc/confluent-init-container:3.0.0
   dataVolumeCapacity: 100Gi
+  storageClassName: standard
   dependencies:
     kRaftController:
       clusterRef:
@@ -54,6 +57,7 @@ spec:
     application: confluentinc/cp-ksqldb-server:8.0.0
     init: confluentinc/confluent-init-container:3.0.0
   dataVolumeCapacity: 10Gi
+  storageClassName: standard
 ---
 #apiVersion: platform.confluent.io/v1beta1
 #kind: ControlCenter
@@ -66,6 +70,7 @@ spec:
 #    application: confluentinc/cp-enterprise-control-center-next-gen:2.2.0
 #    init: confluentinc/confluent-init-container:3.0.0
 #  dataVolumeCapacity: 10Gi
+  storageClassName: standard
 #  dependencies:
 #    schemaRegistry:
 #      url: http://schemaregistry.confluent.svc.cluster.local:8081

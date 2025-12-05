@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: camel-k-mesh-http-ingress
+  namespace: argocd
+spec:
+  project: eventing
+  source:
+    repoURL: https://github.com/nivreddy14/event-mesh.git
+    targetRevision: main
+    path: mesh/http-ingress
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: camel-k-mesh-http-ingress
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: http-ingress-config
+  namespace: camel-k-mesh-http-ingress
+  labels:
+    app: http-ingress
+data:
+  integration.yaml: |
+    - route:
+        id: http-to-kafka
+        from:
+          uri: "platform-http:/api/users"
+          parameters:
+            httpMethodRestrict: POST
+          steps:
+          - log: "Received HTTP request: ${body}"
+          - setProperty:
+              name: eventId
+              simple: "${uuid}"
+          - setProperty:
+              name: eventTime
+              simple: "${date:now:yyyy-MM-dd'T'HH:mm:ssXXX}"
+          - setHeaders:
+              headers:
+                - name: kafka.KEY
+                  simple: "${exchangeProperty.eventId}"
+                - name: Content-Type
+                  constant: application/cloudevents+json
+          - setBody:
+              simple: >
+                {
+                  "specversion": "1.0",
+                  "id": "${exchangeProperty.eventId}",
+                  "source": "urn:eda:http-ingress",
+                  "type": "user.created",
+                  "time": "${exchangeProperty.eventTime}",
+                  "data": ${body}
+                }
+          - marshal:
+              json: {}
+          - to:
+              uri: "kafka:users?brokers=my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+          - setHeader:
+              name: CamelHttpResponseCode
+              constant: 202
+          - setBody:
+              simple: '{"status": "accepted", "eventId": "${exchangeProperty.eventId}"}'
+          - log: "Event ${exchangeProperty.eventId} published to Kafka"

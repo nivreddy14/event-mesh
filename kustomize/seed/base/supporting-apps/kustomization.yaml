@@ -10,4 +10,4 @@ resources:
   - rabbitmq.yaml
   - strimzi-operator.yaml
   - kafka-cluster.yaml
-
+  - http-ingress.yaml

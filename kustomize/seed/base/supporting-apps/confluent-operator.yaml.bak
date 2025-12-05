@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: confluent-operator
+  namespace: argocd
+spec:
+  project: eventing
+  source:
+    repoURL: https://packages.confluent.io/helm
+    targetRevision: 0.1263.34
+    chart: confluent-for-kubernetes
+    helm:
+      parameters:
+        - name: namespaced
+          value: "false"
+        - name: watchNamespaces
+          value: ""
+        - name: rbac.create
+          value: "true"
+        - name: rbac.namespaced
+          value: "false"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: confluent-operator
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+

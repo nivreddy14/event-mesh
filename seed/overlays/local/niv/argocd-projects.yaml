@@ -6,12 +6,14 @@ metadata:
 spec:
   sourceRepos:
     - https://github.com/nivreddy14/event-mesh.git
-    - https://github.com/craigedmunds/confluent-kubernetes-examples.git
+#    - https://github.com/craigedmunds/confluent-kubernetes-examples.git
     - https://packages.confluent.io/helm
     - https://prometheus-community.github.io/helm-charts
     - https://charts.bitnami.com/bitnami
     - https://apache.github.io/camel-k/charts/
     - https://backstage.github.io/charts
+    - https://strimzi.io/charts/              # ADD THIS LINE
+
   sourceNamespaces: []
   destinations:
   - namespace: '*'

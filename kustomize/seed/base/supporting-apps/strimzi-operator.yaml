@@ -9,16 +9,6 @@ spec:
     repoURL: https://strimzi.io/charts/
     targetRevision: 0.46.0
     chart: strimzi-kafka-operator
-    helm:
-      parameters:
-        - name: namespaced
-          value: "false"
-        - name: watchNamespaces
-          value: "kafka"
-        - name: rbac.create
-          value: "true"
-        - name: rbac.namespaced
-          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: strimzi-system

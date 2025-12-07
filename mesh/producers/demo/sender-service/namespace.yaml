@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: camel-k-mesh-producer-sender-service
+  labels:
+    app: sender-service

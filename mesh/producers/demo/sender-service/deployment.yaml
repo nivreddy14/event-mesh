@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: http-ingress
-  namespace: camel-k-mesh-http-ingress
+  name: sender-service
+  namespace: camel-k-mesh-producer-sender-service
   labels:
-    app: http-ingress
+    app: sender-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: http-ingress
+      app: sender-service
   template:
     metadata:
       labels:
-        app: http-ingress
+        app: sender-service
     spec:
       containers:
         - name: integration
@@ -21,17 +21,13 @@ spec:
           args:
             - run
             - /integrations/integration.yaml
-            - --dependency=camel:platform-http
-          ports:
-            - containerPort: 8080
-              name: http
           volumeMounts:
             - name: camel-conf
               mountPath: /integrations
       volumes:
         - name: camel-conf
           configMap:
-            name: http-ingress-config
+            name: sender-service-config
             items:
               - key: integration.yaml
                 path: integration.yaml

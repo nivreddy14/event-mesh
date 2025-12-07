@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: Event Mesh HTTP Ingress API
+  description: |
+    Shared HTTP endpoint for publishing events to the mesh.
+    Each endpoint defines authorized producers and allowed event types.
+  version: 1.0.0
+
+paths:
+  /api/users/events:
+    post:
+      operationId: publishUserEvent
+      summary: Publish user domain events
+      description: Authorized producers can publish user-related events
+      x-authorized-producers:
+        - sender-service
+        - user-service
+      x-allowed-events:
+        - user.created
+        - user.updated
+        - user.deleted
+      x-kafka-topic: users
+      parameters:
+        - $ref: '#/components/parameters/ProducerId'
+        - $ref: '#/components/parameters/EventType'
+      requestBody:
+        $ref: '#/components/requestBodies/EventPayload'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/orders/events:
+    post:
+      operationId: publishOrderEvent
+      summary: Publish order domain events
+      description: Authorized producers can publish order-related events
+      x-authorized-producers:
+        - order-service
+      x-allowed-events:
+        - order.created
+        - order.updated
+        - order.shipped
+        - order.delivered
+        - order.cancelled
+      x-kafka-topic: orders
+      parameters:
+        - $ref: '#/components/parameters/ProducerId'
+        - $ref: '#/components/parameters/EventType'
+      requestBody:
+        $ref: '#/components/requestBodies/EventPayload'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/payments/events:
+    post:
+      operationId: publishPaymentEvent
+      summary: Publish payment domain events
+      description: Authorized producers can publish payment-related events
+      x-authorized-producers:
+        - payment-service
+      x-allowed-events:
+        - payment.initiated
+        - payment.received
+        - payment.failed
+        - payment.refunded
+      x-kafka-topic: payments
+      parameters:
+        - $ref: '#/components/parameters/ProducerId'
+        - $ref: '#/components/parameters/EventType'
+      requestBody:
+        $ref: '#/components/requestBodies/EventPayload'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /api/inventory/events:
+    post:
+      operationId: publishInventoryEvent
+      summary: Publish inventory domain events
+      description: Authorized producers can publish inventory-related events
+      x-authorized-producers:
+        - inventory-service
+        - order-service
+      x-allowed-events:
+        - inventory.updated
+        - inventory.reserved
+        - inventory.released
+      x-kafka-topic: inventory
+      parameters:
+        - $ref: '#/components/parameters/ProducerId'
+        - $ref: '#/components/parameters/EventType'
+      requestBody:
+        $ref: '#/components/requestBodies/EventPayload'
+      responses:
+        '202':
+          $ref: '#/components/responses/Accepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  parameters:
+    ProducerId:
+      name: X-Producer-ID
+      in: header
+      required: true
+      description: Unique identifier for the producer service
+      schema:
+        type: string
+    EventType:
+      name: X-Event-Type
+      in: header
+      required: true
+      description: Type of event being published
+      schema:
+        type: string
+
+  requestBodies:
+    EventPayload:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventData'
+
+  responses:
+    Accepted:
+      description: Event accepted and queued for processing
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AcceptedResponse'
+    BadRequest:
+      description: Bad request - missing or invalid headers/payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Producer not authorized for this endpoint or event type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    EventData:
+      type: object
+      description: Event payload data
+      additionalProperties: true
+
+    AcceptedResponse:
+      type: object
+      required:
+        - status
+        - eventId
+        - topic
+      properties:
+        status:
+          type: string
+          example: accepted
+        eventId:
+          type: string
+          format: uuid
+        topic:
+          type: string
+        producer:
+          type: string
+        eventType:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+        producer:
+          type: string
+        eventType:
+          type: string
+        allowedProducers:
+          type: array
+          items:
+            type: string
+        allowedEvents:
+          type: array
+          items:
+            type: string

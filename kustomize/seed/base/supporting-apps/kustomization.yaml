@@ -11,3 +11,4 @@ resources:
   - strimzi-operator.yaml
   - kafka-cluster.yaml
   - http-ingress.yaml
+  - sender-service.yaml

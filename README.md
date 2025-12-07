@@ -71,3 +71,4 @@ Create an overlay for the root seed application (e.g. seed/overlays/local/craig)
 Re-Apply the seed with the overlay:
 
 `kustomize build seed/overlays/local/craig | kubectl apply -f -`
+

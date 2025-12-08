@@ -10,3 +10,15 @@ spec:
   durable: true
   rabbitmqClusterReference:
     name: camel-k-mesh
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: lob-demo-user-service-usercreated-binding
+  namespace: camel-k-mesh
+spec:
+  source: ex.demo.user-service.usercreated
+  destination: q.my-simple-http-service.demo.user-service.usercreated
+  destinationType: queue
+  rabbitmqClusterReference:
+    name: camel-k-mesh

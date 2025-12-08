@@ -37,14 +37,14 @@ backstage:
     - name: catalog-components
       projected:
         sources:
-        - configMap:
-            name: catalog-component-camel-k-mesh
+        # - configMap:
+        #     name: catalog-component-camel-k-mesh
         # - configMap:
         #     name: catalog-component-camel-k-mesh-demo
         - configMap:
             name: catalog-component-camel-k-mesh-demo-user-service
-        - configMap:
-            name: catalog-component-camel-k-mesh-consumer-my-simple-http-service
+        # - configMap:
+        #     name: catalog-component-camel-k-mesh-consumer-my-simple-http-service
 
   extraVolumeMounts:
     - name: backstage-users
@@ -53,9 +53,6 @@ backstage:
     - name: catalog-components
       mountPath: /etc/backstage/catalog/components
       readOnly: true
-    # - name: catalog-components-demo-user-service
-    #   mountPath: /etc/backstage/catalog/components
-    #   readOnly: true
 
   appConfig:
     app:
@@ -130,4 +127,3 @@ backstage:
               url: https://kubernetes.default.svc
               authProvider: serviceAccount
               skipTLSVerify: true
-      

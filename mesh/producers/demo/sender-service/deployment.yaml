@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sender-service
+  namespace: camel-k-mesh-producer-sender-service
+  labels:
+    app: sender-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sender-service
+  template:
+    metadata:
+      labels:
+        app: sender-service
+    spec:
+      containers:
+        - name: integration
+          image: apache/camel-jbang:4.16.0
+          args:
+            - run
+            - /integrations/integration.yaml
+          volumeMounts:
+            - name: camel-conf
+              mountPath: /integrations
+      volumes:
+        - name: camel-conf
+          configMap:
+            name: sender-service-config
+            items:
+              - key: integration.yaml
+                path: integration.yaml

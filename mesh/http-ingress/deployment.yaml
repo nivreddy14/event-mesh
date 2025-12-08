@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-ingress
+  namespace: camel-k-mesh-http-ingress
+  labels:
+    app: http-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-ingress
+  template:
+    metadata:
+      labels:
+        app: http-ingress
+    spec:
+      containers:
+        - name: integration
+          image: apache/camel-jbang:4.16.0
+          args:
+            - run
+            - /integrations/integration.yaml
+            - --dependency=camel:platform-http
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: camel-conf
+              mountPath: /integrations
+      volumes:
+        - name: camel-conf
+          configMap:
+            name: http-ingress-config
+            items:
+              - key: integration.yaml
+                path: integration.yaml

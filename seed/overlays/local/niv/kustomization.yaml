@@ -4,6 +4,15 @@ resources:
   - ../../../base
   - argocd-projects.yaml
 
+components:
+  - ../../../../kustomize/_common/components/argocd-branch-targetrevision
+
+configMapGenerator:
+  - name: argocd-branch-targetrevision
+    behavior: add
+    literals:
+      - targetRevision=main
+
 patches:
  - target:
       group: argoproj.io
@@ -11,18 +20,6 @@ patches:
       kind: Application
       name: eda-bootstrap
    path: patch-argocd-eda-bootstrap.yaml
- - target:
-      group: argoproj.io
-      version: v1alpha1
-      kind: Application
-      name: camel-k-mesh
-   path: patch-camel-k-mesh.yaml
- - target:
-      group: argoproj.io
-      version: v1alpha1
-      kind: Application
-      name: confluent-operator
-   path: patch-confluent-operator.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -10,7 +10,7 @@ defaultContentType: application/cloudevents+json
 
 servers:
   production:
-    host: kafka.confluent.svc.cluster.local:9092
+    host: my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
     protocol: kafka
     description: Production Kafka cluster
 

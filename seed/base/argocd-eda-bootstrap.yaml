@@ -8,7 +8,7 @@ metadata:
 spec:
   project: eventing
   source:
-    repoURL: https://github.com/craigedmunds/argocd-eda
+    repoURL: https://github.com/craigedmunds/argocd-eda.git
     path: kustomize/seed
     targetRevision: main
   destination:
@@ -17,4 +17,3 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-

@@ -1,14 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: camel-k-mesh
+  name: camel-k-mesh-producer-sender-service
   namespace: argocd
 spec:
   project: eventing
   source:
     repoURL: https://github.com/craigedmunds/argocd-eda.git
     targetRevision: main
-    path: kustomize/mesh
+    path: mesh/producers/demo/sender-service
   destination:
     server: https://kubernetes.default.svc
-    namespace: camel-k-mesh
+    namespace: camel-k-mesh-producer-sender-service
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

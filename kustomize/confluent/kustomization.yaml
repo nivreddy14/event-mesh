@@ -12,5 +12,5 @@ resources:
   # - https://github.com/craigedmunds/confluent-kubernetes-examples//quickstart-deploy/kraft-quickstart/confluent-platform-c3%2B%2B?ref=feature/restructure-kraft-quickstart
   # - https://raw.githubusercontent.com/craigedmunds/confluent-kubernetes-examples/refs/heads/feature/restructure-kraft-quickstart/quickstart-deploy/kraft-quickstart/confluent-platform-c3%2B%2B/confluent-platform-c3%2B%2B.yaml
   - cfk.yaml
-  - ingress.yaml
+#  - ingress.yaml
 
